@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///C:/Users/USER/Downloads/chaerin-journal_3.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>채린's journal ♡</title>
-<link href="./채린&#39;s journal ♡_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --pink-deep: #d4537e;
@@ -150,7 +150,7 @@
 </head>
 <body>
 
-<div class="loading-overlay hidden" id="loading-overlay">
+<div class="loading-overlay" id="loading-overlay">
   <div style="font-size:32px">♡</div>
   <div class="loading-text">connecting...</div>
 </div>
@@ -158,7 +158,7 @@
 <div class="window">
   <div class="titlebar">
     <div class="titlebar-left">
-      <div class="titlebar-icon"><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" class="pixel-sparkle"><rect x="6" y="0" width="2" height="2" fill="white"></rect><rect x="6" y="12" width="2" height="2" fill="white"></rect><rect x="0" y="6" width="2" height="2" fill="white"></rect><rect x="12" y="6" width="2" height="2" fill="white"></rect><rect x="6" y="4" width="2" height="4" fill="white"></rect><rect x="4" y="6" width="4" height="2" fill="white"></rect><rect x="2" y="2" width="2" height="2" fill="white"></rect><rect x="10" y="2" width="2" height="2" fill="white"></rect><rect x="2" y="10" width="2" height="2" fill="white"></rect><rect x="10" y="10" width="2" height="2" fill="white"></rect></svg></div>
+      <div class="titlebar-icon"><svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" class="pixel-sparkle"><rect x="6" y="0" width="2" height="2" fill="white"/><rect x="6" y="12" width="2" height="2" fill="white"/><rect x="0" y="6" width="2" height="2" fill="white"/><rect x="12" y="6" width="2" height="2" fill="white"/><rect x="6" y="4" width="2" height="4" fill="white"/><rect x="4" y="6" width="4" height="2" fill="white"/><rect x="2" y="2" width="2" height="2" fill="white"/><rect x="10" y="2" width="2" height="2" fill="white"/><rect x="2" y="10" width="2" height="2" fill="white"/><rect x="10" y="10" width="2" height="2" fill="white"/></svg></div>
       <span class="titlebar-text">ChaeRin's journal</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
@@ -169,8 +169,8 @@
         <span class="bgm-label" id="bgm-label">BGM</span>
       </button>
       <div class="sync-status">
-        <div class="sync-dot online" id="sync-dot"></div>
-        <span id="sync-label">synced</span>
+        <div class="sync-dot" id="sync-dot"></div>
+        <span id="sync-label">connecting</span>
       </div>
       <div class="titlebar-btns">
         <span>_</span><span>□</span><span>×</span>
@@ -179,15 +179,15 @@
   </div>
 
   <div class="menubar">
-    <button class="active" onclick="switchTab(&#39;write&#39;, this)">File</button>
-    <button onclick="switchTab(&#39;archive&#39;, this)">Archive</button>
-    <button onclick="switchTab(&#39;care&#39;, this)">Care</button>
-    <button onclick="switchTab(&#39;about&#39;, this)">Help</button>
+    <button class="active" onclick="switchTab('write', this)">File</button>
+    <button onclick="switchTab('archive', this)">Archive</button>
+    <button onclick="switchTab('care', this)">Care</button>
+    <button onclick="switchTab('about', this)">Help</button>
   </div>
 
   <!-- WRITE TAB -->
   <div class="panel active" id="tab-write">
-    <div class="date-display" id="today-display">SUNDAY, MAY 31, 2026</div>
+    <div class="date-display" id="today-display"></div>
     <div class="section-label">✦ how are you feeling?</div>
     <div class="mood-row">
       <button class="mood-btn" onclick="selectMood(this)">🌸 soft</button>
@@ -210,15 +210,15 @@
     <div class="section-label">✦ what's on your mind?</div>
     <textarea class="pixel-input" id="entry-body" rows="5" placeholder="write freely, no rules here..."></textarea>
     <button class="save-btn" onclick="saveEntry()">★ SAVE ENTRY ★</button>
-    <div class="toast" id="toast">✦ saved &amp; synced! ✦</div>
+    <div class="toast" id="toast">✦ saved & synced! ✦</div>
   </div>
 
   <!-- ARCHIVE TAB -->
   <div class="panel" id="tab-archive">
     <div class="filter-row">
-      <button class="filter-btn active" onclick="filterEntries(&#39;all&#39;, this)">all</button>
-      <button class="filter-btn" onclick="filterEntries(&#39;journal&#39;, this)">journal</button>
-      <button class="filter-btn" onclick="filterEntries(&#39;care&#39;, this)">care</button>
+      <button class="filter-btn active" onclick="filterEntries('all', this)">all</button>
+      <button class="filter-btn" onclick="filterEntries('journal', this)">journal</button>
+      <button class="filter-btn" onclick="filterEntries('care', this)">care</button>
     </div>
     <div class="entries-list" id="entries-list"></div>
   </div>
@@ -227,36 +227,35 @@
   <div class="panel" id="tab-care">
     <div class="care-header">mental care archive</div>
     <div class="section-label">✦ save a care note</div>
-    <p style="font-family:&#39;VT323&#39;,monospace;font-size:15px;color:var(--text-mid);margin-bottom:10px;letter-spacing:0.5px;">a quote, a reminder, something that helped you — save it here.</p>
+    <p style="font-family:'VT323',monospace;font-size:15px;color:var(--text-mid);margin-bottom:10px;letter-spacing:0.5px;">a quote, a reminder, something that helped you — save it here.</p>
     <div class="care-form">
       <input type="text" class="pixel-input" id="care-title" placeholder="title / source..." style="margin-bottom:8px">
-      <textarea id="care-body" rows="5" placeholder="paste the words that made you feel seen...
-something to come back to on hard days ♡"></textarea>
+      <textarea id="care-body" rows="5" placeholder="paste the words that made you feel seen...&#10;something to come back to on hard days ♡"></textarea>
       <button class="care-save-btn" onclick="saveCare()">★ SAVE</button>
-      <div class="toast" id="toast-care" style="margin-top:8px">✦ archived &amp; synced! ✦</div>
+      <div class="toast" id="toast-care" style="margin-top:8px">✦ archived & synced! ✦</div>
     </div>
   </div>
 
   <!-- HELP TAB -->
   <div class="panel" id="tab-about">
     <div class="care-header">help / about</div>
-    <div style="font-family:&#39;VT323&#39;,monospace;font-size:17px;color:var(--text-mid);line-height:2;letter-spacing:0.5px;">
+    <div style="font-family:'VT323',monospace;font-size:17px;color:var(--text-mid);line-height:2;letter-spacing:0.5px;">
       <p>✦ <b>File</b> — write today's journal entry</p>
-      <p>✦ <b>Archive</b> — browse &amp; read past entries</p>
-      <p>✦ <b>Care</b> — save mental care quotes &amp; notes</p>
+      <p>✦ <b>Archive</b> — browse & read past entries</p>
+      <p>✦ <b>Care</b> — save mental care quotes & notes</p>
       <br>
       <p style="font-size:15px;color:var(--pink-mid)">data syncs in real-time via Firebase ♡<br>works on any device, any browser.</p>
       <br>
       <p style="font-size:13px;color:var(--border)">tip: ctrl+s to save entries.</p>
       <br>
-      <button onclick="clearAllData()" style="background:none;border:2px solid var(--border);font-family:&#39;VT323&#39;,monospace;font-size:14px;color:var(--pink-mid);padding:4px 14px;cursor:pointer;">⚠ clear all data</button>
+      <button onclick="clearAllData()" style="background:none;border:2px solid var(--border);font-family:'VT323',monospace;font-size:14px;color:var(--pink-mid);padding:4px 14px;cursor:pointer;">⚠ clear all data</button>
     </div>
   </div>
 
   <div class="statusbar">
     <div class="status-left">
       <div class="status-icon">🐘</div>
-      <div class="status-date">today is <span id="status-date-text">May 31, 2026</span></div>
+      <div class="status-date">today is <span id="status-date-text"></span></div>
     </div>
     <div class="status-count" id="entry-count">0 entries</div>
   </div>
@@ -469,7 +468,7 @@ let bgmNodes = [];
 let bgmGain = null;
 
 function createBGM() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   bgmGain = audioCtx.createGain();
   bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
   bgmGain.connect(audioCtx.destination);
@@ -577,12 +576,18 @@ function createBGM() {
   scheduleLoop();
 }
 
-window.toggleBGM = function() {
+window.toggleBGM = async function() {
   if (!bgmPlaying) {
     bgmPlaying = true;
-    if (!audioCtx) createBGM();
-    else if (audioCtx.state === 'suspended') audioCtx.resume();
-    if (bgmGain) {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') {
+      await audioCtx.resume();
+    }
+    if (!bgmGain) {
+      createBGM();
+    } else {
       bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
       bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.2);
     }
@@ -600,6 +605,5 @@ window.toggleBGM = function() {
 
 initDates();
 </script>
-
-
-</body></html>
+</body>
+</html>
