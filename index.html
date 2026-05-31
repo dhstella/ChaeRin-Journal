@@ -468,11 +468,6 @@ let bgmNodes = [];
 let bgmGain = null;
 
 function createBGM() {
-  if (bgmGain) {
-    bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.2);
-    return;
-  }
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   bgmGain = audioCtx.createGain();
   bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
@@ -584,27 +579,29 @@ function createBGM() {
 window.toggleBGM = async function() {
   if (!bgmPlaying) {
     bgmPlaying = true;
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state !== 'running') await audioCtx.resume();
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') {
+      await audioCtx.resume();
+    }
+    if (!bgmGain) {
       createBGM();
-    } catch(e) { console.error('BGM error:', e); }
+    } else {
+      bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.2);
+    }
     document.getElementById('bgm-bars').classList.add('playing');
     document.getElementById('bgm-label').textContent = 'ON';
   } else {
     bgmPlaying = false;
-    if (bgmGain) bgmGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    if (bgmGain) {
+      bgmGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    }
     document.getElementById('bgm-bars').classList.remove('playing');
     document.getElementById('bgm-label').textContent = 'BGM';
   }
 };
-
-// iOS unlock trick — create & resume on first touch anywhere
-document.addEventListener('touchstart', async function unlock() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state !== 'running') await audioCtx.resume();
-  document.removeEventListener('touchstart', unlock);
-}, { once: true });
 
 initDates();
 </script>
