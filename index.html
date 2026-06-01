@@ -464,13 +464,13 @@ onSnapshot(q, (snapshot) => {
 // BGM ENGINE
 let audioCtx = null;
 let bgmPlaying = false;
+let bgmNodes = [];
 let bgmGain = null;
-let bgmStarted = false;
 
-function startBGMEngine() {
+function createBGM() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   bgmGain = audioCtx.createGain();
-  bgmGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-  bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.5);
+  bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
   bgmGain.connect(audioCtx.destination);
 
   const reverb = audioCtx.createConvolver();
@@ -486,19 +486,23 @@ function startBGMEngine() {
   reverb.connect(reverbGain);
   reverbGain.connect(bgmGain);
 
+  // chord notes (C maj pentatonic: C4 E4 G4 A4 C5)
   const scale = [261.63, 329.63, 392.00, 440.00, 523.25, 659.25, 783.99];
   const chords = [
-    [261.63, 329.63, 392.00],
-    [293.66, 369.99, 440.00],
-    [329.63, 415.30, 493.88],
-    [261.63, 329.63, 392.00],
+    [261.63, 329.63, 392.00], // C
+    [293.66, 369.99, 440.00], // Dm
+    [329.63, 415.30, 493.88], // Em
+    [261.63, 329.63, 392.00], // C
   ];
-  const beat = 60 / 96;
+  const bpm = 96;
+  const beat = 60 / bpm;
   const loopLen = beat * 16;
 
   function scheduleLoop() {
     if (!bgmPlaying) return;
     const now = audioCtx.currentTime;
+
+    // pad chords
     chords.forEach((chord, ci) => {
       chord.forEach(freq => {
         const osc = audioCtx.createOscillator();
@@ -513,8 +517,11 @@ function startBGMEngine() {
         g.gain.linearRampToValueAtTime(0, start + dur);
         osc.connect(g); g.connect(reverb); g.connect(bgmGain);
         osc.start(start); osc.stop(start + dur);
+        bgmNodes.push(osc);
       });
     });
+
+    // melody (bell-like, high octave)
     const melody = [0,2,4,2, 4,6,4,2, 0,2,4,6, 4,2,0,2];
     melody.forEach((idx, i) => {
       const osc = audioCtx.createOscillator();
@@ -528,7 +535,10 @@ function startBGMEngine() {
       g.gain.exponentialRampToValueAtTime(0.001, start + dur);
       osc.connect(g); g.connect(reverb); g.connect(bgmGain);
       osc.start(start); osc.stop(start + dur);
+      bgmNodes.push(osc);
     });
+
+    // soft kick (low thud)
     [0, beat*4, beat*8, beat*12].forEach(t => {
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
@@ -539,7 +549,10 @@ function startBGMEngine() {
       g.gain.exponentialRampToValueAtTime(0.001, now + t + 0.22);
       osc.connect(g); g.connect(bgmGain);
       osc.start(now + t); osc.stop(now + t + 0.25);
+      bgmNodes.push(osc);
     });
+
+    // hihat
     for (let i = 0; i < 16; i++) {
       const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.05, audioCtx.sampleRate);
       const d = buf.getChannelData(0);
@@ -555,7 +568,9 @@ function startBGMEngine() {
       g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
       src.connect(filt); filt.connect(g); g.connect(bgmGain);
       src.start(t); src.stop(t + 0.05);
+      bgmNodes.push(src);
     }
+
     setTimeout(scheduleLoop, loopLen * 1000 - 200);
   }
   scheduleLoop();
@@ -564,36 +579,29 @@ function startBGMEngine() {
 window.toggleBGM = async function() {
   if (!bgmPlaying) {
     bgmPlaying = true;
-    try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') await audioCtx.resume();
-      if (!bgmStarted) {
-        bgmStarted = true;
-        startBGMEngine();
-      } else {
-        bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        bgmGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.0);
-      }
-    } catch(e) { console.error('BGM error:', e); }
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') {
+      await audioCtx.resume();
+    }
+    if (!bgmGain) {
+      createBGM();
+    } else {
+      bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.2);
+    }
     document.getElementById('bgm-bars').classList.add('playing');
     document.getElementById('bgm-label').textContent = 'ON';
   } else {
     bgmPlaying = false;
     if (bgmGain) {
-      bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
-      bgmGain.gain.setValueAtTime(bgmGain.gain.value, audioCtx.currentTime);
       bgmGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
     }
     document.getElementById('bgm-bars').classList.remove('playing');
     document.getElementById('bgm-label').textContent = 'BGM';
   }
 };
-
-document.addEventListener('touchstart', async function unlock() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') await audioCtx.resume();
-}, { once: true });
 
 initDates();
 </script>
