@@ -63,9 +63,10 @@
   .pixel-input:focus { border-color: var(--pink-mid); box-shadow: 0 0 0 2px var(--pink-light); }
   .pixel-input::placeholder { color: #e8a8be; }
   .mood-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
-  .mood-btn { background: var(--pink-light); border: 2px solid var(--border); padding: 5px 12px; font-family: 'VT323', monospace; font-size: 16px; color: var(--text-mid); cursor: pointer; letter-spacing: 0.5px; transition: all 0.1s; }
-  .mood-btn:hover { background: var(--pink-mid); color: white; border-color: var(--pink-mid); }
-  .mood-btn.selected { background: var(--pink-deep); color: white; border-color: var(--pink-deep); }
+  .mood-card { display: flex; flex-direction: column; align-items: center; gap: 5px; background: var(--pink-light); border: 2px solid var(--border); padding: 8px 10px; font-family: 'Press Start 2P', monospace; font-size: 6px; color: var(--text-mid); letter-spacing: 0.5px; cursor: pointer; image-rendering: pixelated; box-shadow: 3px 3px 0 var(--border); min-width: 58px; text-align: center; transition: none; }
+  .mood-card:hover { background: var(--pink-mid); color: white; box-shadow: 2px 2px 0 var(--pink-mid); transform: translate(1px,1px); }
+  .mood-card.selected { background: var(--pink-deep); border-color: var(--text-dark); color: white; box-shadow: 2px 2px 0 var(--text-dark); transform: translate(1px,1px); }
+  .mood-icon { width: 28px; height: 28px; image-rendering: pixelated; }
   .gratitude-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
   .gratitude-item { display: flex; align-items: center; gap: 8px; }
   .gratitude-num { font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--pink-mid); min-width: 16px; }
@@ -108,9 +109,9 @@
   .care-save-btn:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--pink-deep); }
   .statusbar { background: var(--pink-light); border-top: 2px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 6px 14px; }
   .status-left { display: flex; align-items: center; gap: 10px; }
-  .status-icon { width: 28px; height: 28px; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .status-date { font-family: 'VT323', monospace; font-size: 15px; color: var(--text-mid); letter-spacing: 1px; }
-  .status-date span { color: var(--pink-deep); font-family: 'Press Start 2P', monospace; font-size: 8px; }
+  .status-icon { width: 28px; height: 28px; background: transparent; border: none; display: flex; align-items: center; justify-content: center; }
+  .status-date { font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--text-mid); letter-spacing: 1px; }
+  .status-date span { color: var(--pink-deep); font-family: 'Press Start 2P', monospace; font-size: 7px; }
   .status-count { font-family: 'Press Start 2P', monospace; font-size: 6px; color: var(--pink-mid); letter-spacing: 1px; }
   .loading-overlay { position: fixed; inset: 0; background: var(--pink-pale); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 999; }
   .loading-overlay.hidden { display: none; }
@@ -189,15 +190,80 @@
   <div class="panel active" id="tab-write">
     <div class="date-display" id="today-display"></div>
     <div class="section-label">✦ how are you feeling?</div>
-    <div class="mood-row">
-      <button class="mood-btn" onclick="selectMood(this)">🌸 soft</button>
-      <button class="mood-btn" onclick="selectMood(this)">✨ grateful</button>
-      <button class="mood-btn" onclick="selectMood(this)">🌧 heavy</button>
-      <button class="mood-btn" onclick="selectMood(this)">🌻 hopeful</button>
-      <button class="mood-btn" onclick="selectMood(this)">😶 numb</button>
-      <button class="mood-btn" onclick="selectMood(this)">🔥 anxious</button>
-      <button class="mood-btn" onclick="selectMood(this)">💛 cozy</button>
-      <button class="mood-btn" onclick="selectMood(this)">🌙 tired</button>
+    <div class="mood-row" id="mood-row">
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="1" width="6" height="2" fill="#f9c8d8"/><rect x="4" y="3" width="8" height="2" fill="#f9c8d8"/><rect x="3" y="5" width="10" height="3" fill="#fbd8e8"/><rect x="4" y="8" width="8" height="1" fill="#f4a0c0"/><rect x="5" y="9" width="6" height="1" fill="#ed93b1"/><rect x="6" y="10" width="4" height="2" fill="#d4537e"/><rect x="7" y="12" width="2" height="3" fill="#d4537e"/><rect x="5" y="3" width="2" height="2" fill="#ffeef5"/><rect x="9" y="2" width="2" height="2" fill="#ffeef5"/>
+        </svg>
+        soft
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="4" width="4" height="2" fill="#e8607a"/>
+          <rect x="10" y="4" width="4" height="2" fill="#e8607a"/>
+          <rect x="1" y="6" width="6" height="2" fill="#e8607a"/>
+          <rect x="9" y="6" width="6" height="2" fill="#e8607a"/>
+          <rect x="1" y="8" width="14" height="2" fill="#e8607a"/>
+          <rect x="2" y="10" width="12" height="2" fill="#e8607a"/>
+          <rect x="3" y="12" width="10" height="2" fill="#e8607a"/>
+          <rect x="5" y="14" width="6" height="1" fill="#e8607a"/>
+          <rect x="7" y="15" width="2" height="1" fill="#e8607a"/>
+          <rect x="2" y="5" width="2" height="2" fill="#ffaabb"/>
+          <rect x="10" y="5" width="2" height="2" fill="#ffaabb"/>
+        </svg>
+        grateful
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="5" height="2" fill="#8899aa"/><rect x="9" y="2" width="6" height="2" fill="#8899aa"/><rect x="16" y="4" width="5" height="2" fill="#8899aa"/><rect x="2" y="5" width="7" height="4" fill="#aabccc"/><rect x="9" y="4" width="7" height="5" fill="#aabccc"/><rect x="16" y="6" width="6" height="3" fill="#aabccc"/><rect x="2" y="8" width="20" height="2" fill="#8faabb"/>
+          <rect x="4" y="12" width="2" height="1" fill="#5599cc"/><rect x="3" y="13" width="4" height="3" fill="#5599cc"/><rect x="4" y="16" width="2" height="1" fill="#5599cc"/>
+          <rect x="10" y="11" width="2" height="1" fill="#5599cc"/><rect x="9" y="12" width="4" height="3" fill="#5599cc"/><rect x="10" y="15" width="2" height="1" fill="#5599cc"/>
+          <rect x="16" y="12" width="2" height="1" fill="#5599cc"/><rect x="15" y="13" width="4" height="3" fill="#5599cc"/><rect x="16" y="16" width="2" height="1" fill="#5599cc"/>
+          <rect x="7" y="15" width="2" height="1" fill="#88bbdd"/><rect x="6" y="16" width="4" height="3" fill="#88bbdd"/><rect x="7" y="19" width="2" height="1" fill="#88bbdd"/>
+          <rect x="13" y="16" width="2" height="1" fill="#88bbdd"/><rect x="12" y="17" width="4" height="3" fill="#88bbdd"/><rect x="13" y="20" width="2" height="1" fill="#88bbdd"/>
+          <rect x="4" y="13" width="1" height="1" fill="#aaddff"/><rect x="10" y="12" width="1" height="1" fill="#aaddff"/><rect x="16" y="13" width="1" height="1" fill="#aaddff"/>
+        </svg>
+        heavy
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="1" width="2" height="3" fill="#f8f8e8"/><rect x="7" y="12" width="2" height="3" fill="#f8f8e8"/><rect x="1" y="7" width="3" height="2" fill="#f8f8e8"/><rect x="12" y="7" width="3" height="2" fill="#f8f8e8"/><rect x="3" y="3" width="2" height="2" fill="#f8f8e8"/><rect x="11" y="3" width="2" height="2" fill="#f8f8e8"/><rect x="3" y="11" width="2" height="2" fill="#f8f8e8"/><rect x="11" y="11" width="2" height="2" fill="#f8f8e8"/><rect x="5" y="5" width="6" height="6" fill="#ffd93d"/><rect x="4" y="6" width="8" height="4" fill="#ffd93d"/><rect x="6" y="4" width="4" height="8" fill="#ffd93d"/><rect x="6" y="6" width="4" height="4" fill="#e8a800"/><rect x="7" y="7" width="2" height="2" fill="#ffec80"/>
+        </svg>
+        hopeful
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="4" width="10" height="9" fill="#d8d8e8"/><rect x="2" y="5" width="12" height="7" fill="#d8d8e8"/><rect x="4" y="3" width="8" height="10" fill="#d8d8e8"/><rect x="4" y="7" width="3" height="3" fill="#9898b0"/><rect x="5" y="6" width="1" height="1" fill="#9898b0"/><rect x="5" y="10" width="1" height="1" fill="#9898b0"/><rect x="9" y="7" width="3" height="3" fill="#9898b0"/><rect x="10" y="6" width="1" height="1" fill="#9898b0"/><rect x="10" y="10" width="1" height="1" fill="#9898b0"/><rect x="4" y="7" width="1" height="1" fill="#e8e8f8"/><rect x="9" y="7" width="1" height="1" fill="#e8e8f8"/><rect x="6" y="11" width="4" height="1" fill="#9898b0"/><rect x="2" y="9" width="2" height="1" fill="#eebbd0"/><rect x="12" y="9" width="2" height="1" fill="#eebbd0"/>
+        </svg>
+        numb
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="1" width="2" height="2" fill="#ffe066"/><rect x="5" y="2" width="2" height="2" fill="#ffaa00"/><rect x="9" y="2" width="2" height="2" fill="#ffaa00"/><rect x="4" y="4" width="2" height="3" fill="#ff8800"/><rect x="10" y="3" width="2" height="4" fill="#ff8800"/><rect x="6" y="3" width="4" height="3" fill="#ffe066"/><rect x="3" y="7" width="10" height="5" fill="#ff6600"/><rect x="4" y="6" width="8" height="6" fill="#ff6600"/><rect x="5" y="5" width="6" height="7" fill="#ff8800"/><rect x="6" y="4" width="4" height="4" fill="#ffcc00"/><rect x="4" y="12" width="8" height="2" fill="#dd4400"/><rect x="5" y="14" width="6" height="1" fill="#dd4400"/><rect x="7" y="7" width="3" height="3" fill="#ffee88"/>
+        </svg>
+        anxious
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="1" width="2" height="2" fill="#d4537e"/><rect x="11" y="3" width="2" height="2" fill="#d4537e"/><rect x="4" y="5" width="8" height="8" fill="#f9a8c0"/><rect x="3" y="6" width="10" height="6" fill="#f9a8c0"/><rect x="5" y="4" width="6" height="10" fill="#f9a8c0"/><rect x="4" y="6" width="8" height="2" fill="#ed6090"/><rect x="4" y="10" width="8" height="2" fill="#ed6090"/><rect x="4" y="6" width="2" height="2" fill="#f4c0d1"/><rect x="8" y="5" width="2" height="2" fill="#f4c0d1"/><rect x="6" y="9" width="2" height="2" fill="#f4c0d1"/><rect x="10" y="9" width="2" height="2" fill="#f4c0d1"/><rect x="2" y="13" width="3" height="2" fill="#d4537e"/><rect x="3" y="12" width="2" height="2" fill="#d4537e"/>
+        </svg>
+        cozy
+      </div>
+
+      <div class="mood-card" onclick="selectMood(this)">
+        <svg class="mood-icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="8" height="8" fill="#aab8d4"/><rect x="3" y="5" width="10" height="6" fill="#aab8d4"/><rect x="5" y="3" width="6" height="10" fill="#aab8d4"/><rect x="5" y="7" width="3" height="1" fill="#6677aa"/><rect x="9" y="7" width="3" height="1" fill="#6677aa"/><rect x="6" y="9" width="4" height="1" fill="#6677aa"/><rect x="12" y="3" width="3" height="1" fill="#c8d0e8"/><rect x="13" y="2" width="2" height="1" fill="#c8d0e8"/><rect x="13" y="4" width="1" height="1" fill="#c8d0e8"/><rect x="1" y="2" width="1" height="1" fill="#c8d0e8"/><rect x="2" y="3" width="1" height="1" fill="#c8d0e8"/>
+        </svg>
+        tired
+      </div>
+
     </div>
     <div class="section-label">✦ today's title</div>
     <input type="text" class="pixel-input" id="entry-title" placeholder="give this day a name..." style="margin-bottom:14px">
@@ -254,7 +320,34 @@
 
   <div class="statusbar">
     <div class="status-left">
-      <div class="status-icon">🐘</div>
+      <div class="status-icon">
+        <svg width="26" height="26" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+          <!-- 줄기 왼쪽 -->
+          <rect x="4" y="0" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="4" y="1" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="5" y="2" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="6" y="2" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="6" y="3" width="1" height="1" fill="#4a7a2a"/>
+          <!-- 줄기 오른쪽 -->
+          <rect x="9" y="0" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="9" y="1" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="9" y="2" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="8" y="3" width="1" height="1" fill="#4a7a2a"/>
+          <rect x="8" y="4" width="1" height="1" fill="#4a7a2a"/>
+          <!-- 왼쪽 체리 -->
+          <rect x="2" y="5" width="4" height="4" fill="#d42040"/>
+          <rect x="1" y="6" width="6" height="2" fill="#d42040"/>
+          <rect x="2" y="9" width="4" height="2" fill="#aa1030"/>
+          <rect x="3" y="11" width="2" height="1" fill="#aa1030"/>
+          <rect x="2" y="6" width="1" height="1" fill="#ff8899"/>
+          <!-- 오른쪽 체리 -->
+          <rect x="9" y="6" width="4" height="4" fill="#d42040"/>
+          <rect x="8" y="7" width="6" height="2" fill="#d42040"/>
+          <rect x="9" y="10" width="4" height="2" fill="#aa1030"/>
+          <rect x="10" y="12" width="2" height="1" fill="#aa1030"/>
+          <rect x="9" y="7" width="1" height="1" fill="#ff8899"/>
+        </svg>
+      </div>
       <div class="status-date">today is <span id="status-date-text"></span></div>
     </div>
     <div class="status-count" id="entry-count">0 entries</div>
@@ -325,10 +418,10 @@ window.switchTab = function(name, btn) {
   if (name === 'archive') renderEntries('all');
 };
 
-window.selectMood = function(btn) {
-  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedMood = btn.textContent.trim();
+window.selectMood = function(el) {
+  document.querySelectorAll('.mood-card').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMood = el.textContent.trim();
 };
 
 window.saveEntry = async function() {
@@ -464,13 +557,13 @@ onSnapshot(q, (snapshot) => {
 // BGM ENGINE
 let audioCtx = null;
 let bgmPlaying = false;
-let bgmNodes = [];
 let bgmGain = null;
+let bgmStarted = false;
 
-function createBGM() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function startBGMEngine() {
   bgmGain = audioCtx.createGain();
-  bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  bgmGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+  bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.5);
   bgmGain.connect(audioCtx.destination);
 
   const reverb = audioCtx.createConvolver();
@@ -486,23 +579,19 @@ function createBGM() {
   reverb.connect(reverbGain);
   reverbGain.connect(bgmGain);
 
-  // chord notes (C maj pentatonic: C4 E4 G4 A4 C5)
   const scale = [261.63, 329.63, 392.00, 440.00, 523.25, 659.25, 783.99];
   const chords = [
-    [261.63, 329.63, 392.00], // C
-    [293.66, 369.99, 440.00], // Dm
-    [329.63, 415.30, 493.88], // Em
-    [261.63, 329.63, 392.00], // C
+    [261.63, 329.63, 392.00],
+    [293.66, 369.99, 440.00],
+    [329.63, 415.30, 493.88],
+    [261.63, 329.63, 392.00],
   ];
-  const bpm = 96;
-  const beat = 60 / bpm;
+  const beat = 60 / 96;
   const loopLen = beat * 16;
 
   function scheduleLoop() {
     if (!bgmPlaying) return;
     const now = audioCtx.currentTime;
-
-    // pad chords
     chords.forEach((chord, ci) => {
       chord.forEach(freq => {
         const osc = audioCtx.createOscillator();
@@ -517,11 +606,8 @@ function createBGM() {
         g.gain.linearRampToValueAtTime(0, start + dur);
         osc.connect(g); g.connect(reverb); g.connect(bgmGain);
         osc.start(start); osc.stop(start + dur);
-        bgmNodes.push(osc);
       });
     });
-
-    // melody (bell-like, high octave)
     const melody = [0,2,4,2, 4,6,4,2, 0,2,4,6, 4,2,0,2];
     melody.forEach((idx, i) => {
       const osc = audioCtx.createOscillator();
@@ -535,10 +621,7 @@ function createBGM() {
       g.gain.exponentialRampToValueAtTime(0.001, start + dur);
       osc.connect(g); g.connect(reverb); g.connect(bgmGain);
       osc.start(start); osc.stop(start + dur);
-      bgmNodes.push(osc);
     });
-
-    // soft kick (low thud)
     [0, beat*4, beat*8, beat*12].forEach(t => {
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
@@ -549,10 +632,7 @@ function createBGM() {
       g.gain.exponentialRampToValueAtTime(0.001, now + t + 0.22);
       osc.connect(g); g.connect(bgmGain);
       osc.start(now + t); osc.stop(now + t + 0.25);
-      bgmNodes.push(osc);
     });
-
-    // hihat
     for (let i = 0; i < 16; i++) {
       const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.05, audioCtx.sampleRate);
       const d = buf.getChannelData(0);
@@ -568,9 +648,7 @@ function createBGM() {
       g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
       src.connect(filt); filt.connect(g); g.connect(bgmGain);
       src.start(t); src.stop(t + 0.05);
-      bgmNodes.push(src);
     }
-
     setTimeout(scheduleLoop, loopLen * 1000 - 200);
   }
   scheduleLoop();
@@ -579,29 +657,36 @@ function createBGM() {
 window.toggleBGM = async function() {
   if (!bgmPlaying) {
     bgmPlaying = true;
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') {
-      await audioCtx.resume();
-    }
-    if (!bgmGain) {
-      createBGM();
-    } else {
-      bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
-      bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.2);
-    }
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+      if (!bgmStarted) {
+        bgmStarted = true;
+        startBGMEngine();
+      } else {
+        bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+        bgmGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        bgmGain.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 1.0);
+      }
+    } catch(e) { console.error('BGM error:', e); }
     document.getElementById('bgm-bars').classList.add('playing');
     document.getElementById('bgm-label').textContent = 'ON';
   } else {
     bgmPlaying = false;
     if (bgmGain) {
+      bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      bgmGain.gain.setValueAtTime(bgmGain.gain.value, audioCtx.currentTime);
       bgmGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
     }
     document.getElementById('bgm-bars').classList.remove('playing');
     document.getElementById('bgm-label').textContent = 'BGM';
   }
 };
+
+document.addEventListener('touchstart', async function unlock() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') await audioCtx.resume();
+}, { once: true });
 
 initDates();
 </script>
